@@ -33,8 +33,7 @@ int main(int argc, char** argv){
     }
     struct sockaddr_in server_addr, client_addr;
     int port = 6000;
-    char addr[80];
-    float probab = 0.5;
+    float probab = 0.7;
     int max_pack_num = 100;
     //char opt = getopt(argc, argv, "ap");
     //if(opt = 'p')
@@ -52,20 +51,23 @@ int main(int argc, char** argv){
     char oopt;
     while ((oopt = getopt(argc, argv, "a:p:")) != -1){
         switch(oopt){
-            case 'a':
-                strncpy(addr,optarg,80);
-                break;
             case 'p':
                 port = atoi(optarg);
         }
     }
-    printf("\n%s:%d\n", addr, port);
-    struct hostent *host = gethostbyname(addr);
+    printf("%d\n", port);
 
     server_addr.sin_family = AF_INET;
     server_addr.sin_port = htons(port);
-    server_addr.sin_addr = *((struct in_addr *)host->h_addr);
+    server_addr.sin_addr.s_addr = INADDR_ANY;
     bzero(&(server_addr.sin_zero),8);
+    if (bind(sock,(struct sockaddr *)&server_addr,
+                sizeof(struct sockaddr)) == -1)
+    {
+        perror("Bind");
+        exit(1);
+    }
+
     char send_data[1024], recv_data[1024];
     int bytes_read;
 
@@ -79,12 +81,13 @@ int main(int argc, char** argv){
     while (ackednum < max_pack_num){
 
         bytes_read = unrel_recvfrom(sock,recv_data,1024,0,
-                (struct sockaddr *)&server_addr, &addr_len, probab);
+                (struct sockaddr *)&client_addr, &addr_len, probab);
+        printf("Recd\n");
 
-        if(bytes_read[0] == exp_seq){
+        if(recv_data[0] == exp_seq){
             send_data[0] = exp_seq;
             sendto(sock, send_data, 1, 0,
-                    (struct sockaddr *)&server_addr, sizeof(struct sockaddr));
+                    (struct sockaddr *)&client_addr, sizeof(struct sockaddr));
 
             exp_seq = exp_seq?0:1;
             ackednum++;
