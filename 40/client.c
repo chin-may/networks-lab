@@ -1,16 +1,29 @@
 #include <sys/time.h>
 #include <sys/types.h>
 #include <sys/socket.h>
-#include <sys/select.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <netdb.h>
 #include <stdio.h>
 #include <unistd.h>
-#include <fcntl.h>
 #include <errno.h>
 #include <string.h>
 #include <stdlib.h>
+
+ssize_t unrel_recvfrom(int sockfd, void *buf, size_t len, int flags,
+        struct sockaddr *src_addr, socklen_t *addrlen, float probab){
+    int probab_int = (int) (probab*100);
+    int r = random() % 100;
+    while(r < probab_int){
+        char* tmp = malloc(len);
+        recvfrom(sockfd, tmp, len, flags, src_addr, addrlen);
+        free(tmp);
+        r = random() % 100;
+    }
+    return recvfrom(sockfd, buf, len, flags, src_addr, addrlen);
+
+}
+
 int main(int argc, char** argv){
     int sock;
     sock = socket(AF_INET, SOCK_DGRAM, 0);
@@ -21,16 +34,18 @@ int main(int argc, char** argv){
     struct sockaddr_in server_addr, client_addr;
     int port = 6000;
     char addr[80];
+    float probab = 0.5;
+    int max_pack_num = 100;
     //char opt = getopt(argc, argv, "ap");
     //if(opt = 'p')
-        //port = atoi(optarg);
+    //port = atoi(optarg);
     //else 
-        //strncpy(addr, optarg, 80);
+    //strncpy(addr, optarg, 80);
     //opt = getopt(argc, argv, "ap");
     //if(opt = 'p')
-        //port = atoi(optarg);
+    //port = atoi(optarg);
     //else 
-        //strncpy(addr, optarg, 80);
+    //strncpy(addr, optarg, 80);
 
     //printf("%s:%d\n", addr, port);
 
@@ -56,60 +71,26 @@ int main(int argc, char** argv){
 
     int addr_len = sizeof(struct sockaddr);
 
-    fd_set sockset;
-    FD_ZERO(&sockset);
-    FD_SET(sock, &sockset);
+    int exp_seq = 0;
+    int ackednum = 0;
 
-    int opts = fcntl(sock, F_GETFL);
-    if(opts < 0){
-        perror("getfl\n");
-        exit(1);
-    }
-    opts = opts | O_NONBLOCK;
-    if(fcntl(sock,F_SETFL, opts) < 0){
-        perror("set nonblock failed");
-        exit(1);
-    }
+    long start_time, ack_time;
 
-    struct timeval timeout;
-    timeout.tv_sec = 1;
-    timeout.tv_usec = 0;
-    int sel;
+    while (ackednum < max_pack_num){
 
+        bytes_read = unrel_recvfrom(sock,recv_data,1024,0,
+                (struct sockaddr *)&server_addr, &addr_len, probab);
 
-    while (1){
-
-        printf("Enter roll number:\n");
-        scanf("%s",send_data);
-
-        if ((strcmp(send_data , "q") == 0) || strcmp(send_data , "Q") == 0)
-            break;
-
-        sendto(sock, send_data, strlen(send_data), 0,
-                (struct sockaddr *)&server_addr, sizeof(struct sockaddr));
-        FD_ZERO(&sockset);
-        FD_SET(sock, &sockset);
-
-        sel = select(sock+1, &sockset, NULL, NULL, &timeout);
-        while(sel < 1) {
-            printf("No response\n");
-            sendto(sock, send_data, strlen(send_data), 0,
+        if(bytes_read[0] == exp_seq){
+            send_data[0] = exp_seq;
+            sendto(sock, send_data, 1, 0,
                     (struct sockaddr *)&server_addr, sizeof(struct sockaddr));
-            FD_ZERO(&sockset);
-            FD_SET(sock, &sockset);
 
-            sel = select(sock+1, &sockset, NULL, NULL, &timeout);
+            exp_seq = exp_seq?0:1;
+            ackednum++;
         }
-        bytes_read = recvfrom(sock,recv_data,1024,0,
-                (struct sockaddr *)&server_addr, &addr_len);
-
-        recv_data[bytes_read] = '\0';
-        printf("%s\n", recv_data);
     }
 
     close(sock);
-
-
-
     return 0;
 }
