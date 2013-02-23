@@ -1,0 +1,4 @@
+netold/*
+*.o
+a.out
+main
