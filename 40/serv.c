@@ -64,14 +64,12 @@ int main(int argc, char *argv[]){
     if(fork() != 0){
         int transnum = 0;
         struct hostent *host = gethostbyname(addr);
-        printf("Connecting to %s %d\n",addr, port);
         server_addr.sin_family = AF_INET;
         server_addr.sin_port = htons(port);
         server_addr.sin_addr = *((struct in_addr *)host->h_addr);
         bzero(&(server_addr.sin_zero),8);
 
 
-        printf("Client started\n");
         int bytes_read;
         char buf[1024];
 
@@ -97,50 +95,55 @@ int main(int argc, char *argv[]){
 
         ackednum = 0;
         int seqnum = 0;
+        int i;
         char pbuf[sizeof(long)];
         unsigned long mutime, sectime;
         char *data = malloc(pack_len + 1);
         int tries = 1;
         FILE *p_outptr = fdopen(p_out, "r");
         struct timeval *rec_time = malloc(sizeof(struct timeval));
+        read(lock[1],pbuf, 1);
+
+        read(p_out, pbuf, sizeof(long));
+        mutime = 0;
+        for(i = 0; i < sizeof(long); i++){
+            mutime <<= 8;
+            mutime |= pbuf[i] & 0xff;
+        }
+
+        sectime = 0;
+        read(p_out, pbuf, sizeof(long));
+        for(i = 0; i < sizeof(long); i++){
+            sectime <<= 8;
+            sectime |= pbuf[i] & 0xff;
+        }
         while(ackednum < max_pack_num){
             data[0] = seqnum;
             sendto(sock, data, pack_len + 1, 0, (struct sockaddr*) &server_addr, sizeof(struct sockaddr));
             transnum++;
-            //printf("Sent seqno %d\n", seqnum);
             FD_ZERO(&sockset);
             FD_SET(sock, &sockset);
             timeout.tv_usec = 100000;
             int sel = select(sock+1, &sockset, NULL, NULL, &timeout);
             if(sel < 1) {
-                printf("timeout\n");
-                fflush(stdout);
+                //printf("timeout\n");
+                //fflush(stdout);
                 tries++;
-            //    if(tries > 15) exit(1);
             }
             else{
                 bytes_read = recvfrom(sock,buf,1024,0,
                         (struct sockaddr *)&client_addr, &addr_len);
                 gettimeofday(rec_time, NULL);
                 ackednum++;
-                //printf("Got ack %d\n", seqnum);
                 seqnum = seqnum?0:1;
-                tries = 1;
-                //printf("debug: %d\n", debugc);
-                //printf("max_pack_num: %d\n", max_pack_num);
-                //printf("Seq #:%d; Time Generated: %ld; Time ack Recd: %ld; No of attempts: %d\n", seqnum, mutime, rec_time->tv_usec, tries);
                 if(debugc){
-                    printf("Seq #:%d; Time Generated: %ld; Time ack Recd: %ld; No of attempts: %d\n", seqnum, mutime, rec_time->tv_usec, tries);
+                    printf("Seq #:%d; Time Generated: %lds %ldMus; Time ack Recd: %lds %ldMus; No of attempts: %d\n", seqnum,sectime%100, mutime, rec_time->tv_sec%100,rec_time->tv_usec, tries);
                 }
-                //printf("About to block\n");
+                tries = 1;
                 read(lock[1],pbuf, 1);
 
-                //printf("About to scan\n");
-                //fscanf(p_outptr,"%ld",&mutime);
                 read(p_out, pbuf, sizeof(long));
-                //printf("Unblocked\n");
                 mutime = 0;
-                int i;
                 for(i = 0; i < sizeof(long); i++){
                     mutime <<= 8;
                     mutime |= pbuf[i] & 0xff;
@@ -152,7 +155,6 @@ int main(int argc, char *argv[]){
                     sectime <<= 8;
                     sectime |= pbuf[i] & 0xff;
                 }
-                //printf("pipe out: %lx\n", mutime);
             }
         }
         gettimeofday(&end_time, NULL);
@@ -164,7 +166,6 @@ int main(int argc, char *argv[]){
         return 0;
     }
     else{
-        printf("--forked\n");
         long avg_delay = 1000000000 / pack_rate;
         struct timespec *st = malloc(sizeof(struct timespec));
         st->tv_sec = 0;
@@ -173,7 +174,7 @@ int main(int argc, char *argv[]){
         struct timeval *gen_time = malloc(sizeof(struct timeval));
         FILE *p_inptr = fdopen(p_in, "w");
         int gennum = 0;
-        while(gennum < max_pack_num){
+        while(gennum <= max_pack_num){
             st->tv_nsec = random()%(avg_delay*2 + 1);
             //printf("--about to sleep\n");
             nanosleep(st,NULL);
@@ -184,6 +185,7 @@ int main(int argc, char *argv[]){
                 //out_buf[i] = (gen_time->tv_usec >> (sizeof(long) - (i + 1)*8)) & 0xFF;
                 out_buf[i] = (gen_time->tv_usec >> (sizeof(long) - (i +1) )*8 ) & 0xff ;
             }
+            write(p_in, out_buf, sizeof(long));
             for(i = 0; i < sizeof(long); i++){
                 //out_buf[i] = (gen_time->tv_usec >> (sizeof(long) - (i + 1)*8)) & 0xFF;
                 out_buf[i] = (gen_time->tv_sec >> (sizeof(long) - (i +1) )*8 ) & 0xff ;
