@@ -33,7 +33,7 @@ int main(int argc, char** argv){
     }
     struct sockaddr_in server_addr, client_addr;
     int port = 6000;
-    float probab = 0.7;
+    float probab = 0.2;
     int max_pack_num = 100;
     //char opt = getopt(argc, argv, "ap");
     //if(opt = 'p')

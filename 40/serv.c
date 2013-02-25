@@ -31,11 +31,12 @@ int main(int argc, char *argv[]){
     int port = 6000;
     char addr[80];
     int max_pack_num = 100;
+    int dxxd = 1;
     char oopt;
     int pack_rate = 1;
-    int debug = 0;
+    int debugc = 1;
     int pack_len;
-    while ((oopt = getopt(argc, argv, "p:a:r:")) != -1){
+    while ((oopt = getopt(argc, argv, "p:s:r:l:n:d")) != -1){
         switch(oopt){
             case 'p':
                 port = atoi(optarg);
@@ -47,12 +48,14 @@ int main(int argc, char *argv[]){
                 pack_rate = atoi(optarg);
                 break;
             case 'd':
-                debug = 1;
+                debugc = 1;
                 break;
             case 'l':
                 pack_len = atoi(optarg);
+                break;
             case 'n':
                 max_pack_num = atoi(optarg);
+                break;
         }
     }
     int ackednum = 0;
@@ -70,7 +73,6 @@ int main(int argc, char *argv[]){
         char buf[1024];
 
         int addr_len = sizeof(struct sockaddr);
-        int seq_no = 0;
 
         int opts = fcntl(sock, F_GETFL);
         if(opts < 0){
@@ -93,12 +95,14 @@ int main(int argc, char *argv[]){
         ackednum = 0;
         int seqnum = 0;
         char pbuf[sizeof(long)];
-        long mutime;
-        char data[80];
-        int tries = 0;
+        unsigned long mutime;
+        char *data = malloc(pack_len + 1);
+        int tries = 1;
+        FILE *p_outptr = fdopen(p_out, "r");
+        struct timeval *rec_time = malloc(sizeof(struct timeval));
         while(ackednum < max_pack_num){
             data[0] = seqnum;
-            sendto(sock, data, 80, 0, (struct sockaddr*) &server_addr, sizeof(struct sockaddr));
+            sendto(sock, data, pack_len + 1, 0, (struct sockaddr*) &server_addr, sizeof(struct sockaddr));
             printf("Sent seqno %d\n", seqnum);
             FD_ZERO(&sockset);
             FD_SET(sock, &sockset);
@@ -113,22 +117,34 @@ int main(int argc, char *argv[]){
             else{
                 bytes_read = recvfrom(sock,buf,1024,0,
                         (struct sockaddr *)&client_addr, &addr_len);
+                gettimeofday(rec_time, NULL);
                 ackednum++;
                 printf("Got ack %d\n", seqnum);
                 seqnum = seqnum?0:1;
+                tries = 0;
+                if(dxxd>0)
+                    printf("Seq #:%d; Time Generated: %ld; Time ack Recd: %ld; No of attempts: %d\n", seqnum, mutime, rec_time->tv_usec, tries);
+                if(debugc){
+                    //printf("Seq #:%d; Time Generated: %ld; Time ack Recd: %ld; No of attempts: %d\n", seq_no, mutime, rec_time->tv_usec, tries);
+                }
                 //printf("About to block\n");
                 read(lock[1],pbuf, 1);
 
+                //printf("About to scan\n");
+                //fscanf(p_outptr,"%ld",&mutime);
                 read(p_out, pbuf, sizeof(long));
                 //printf("Unblocked\n");
                 mutime = 0;
                 int i;
                 for(i = 0; i < sizeof(long); i++){
-                    mutime |= pbuf[i];
-                    mutime <<= 1;
+                    //putchar(pbuf[i]);
+                    mutime <<= 8;
+                    mutime |= pbuf[i] & 0xff;
                 }
+                //printf("pipe out: %lx\n", mutime);
             }
         }
+        printf("");
         close(sock);
         return 0;
     }
@@ -140,16 +156,22 @@ int main(int argc, char *argv[]){
         char out_buf[sizeof(long)];
         int i;
         struct timeval *gen_time = malloc(sizeof(struct timeval));
+        FILE *p_inptr = fdopen(p_in, "w");
         while(ackednum < max_pack_num){
             st->tv_nsec = random()%(avg_delay*2 + 1);
             //printf("--about to sleep\n");
             nanosleep(st,NULL);
             //printf("--woke up\n");
             gettimeofday(gen_time, NULL);
+            //printf("pipe in: %lx\n", gen_time->tv_usec);
             for(i = 0; i < sizeof(long); i++){
-                out_buf[i] = (gen_time->tv_usec << (sizeof(long) - i));
+                //out_buf[i] = (gen_time->tv_usec >> (sizeof(long) - (i + 1)*8)) & 0xFF;
+                out_buf[i] = (gen_time->tv_usec >> (sizeof(long) - (i +1) )*8 ) & 0xff ;
+
             }
             //printf("--about to write\n");
+           // fprintf(p_inptr, "%ld",gen_time->tv_usec);
+            //fflush(p_inptr);
             write(p_in, out_buf, sizeof(long));
             write(lock[0], out_buf, 1);
         }
