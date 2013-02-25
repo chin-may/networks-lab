@@ -34,9 +34,9 @@ int main(int argc, char *argv[]){
     int dxxd = 1;
     char oopt;
     int pack_rate = 1;
-    int debugc = 1;
+    int debugc = 0;
     int pack_len;
-    while ((oopt = getopt(argc, argv, "p:s:r:l:n:d")) != -1){
+    while ((oopt = getopt(argc, argv, "dp:s:r:l:n:")) != -1){
         switch(oopt){
             case 'p':
                 port = atoi(optarg);
@@ -48,6 +48,7 @@ int main(int argc, char *argv[]){
                 pack_rate = atoi(optarg);
                 break;
             case 'd':
+                atoi(optarg);
                 debugc = 1;
                 break;
             case 'l':
@@ -122,10 +123,11 @@ int main(int argc, char *argv[]){
                 printf("Got ack %d\n", seqnum);
                 seqnum = seqnum?0:1;
                 tries = 0;
-                if(dxxd>0)
-                    printf("Seq #:%d; Time Generated: %ld; Time ack Recd: %ld; No of attempts: %d\n", seqnum, mutime, rec_time->tv_usec, tries);
+                //printf("debug: %d\n", debugc);
+                printf("max_pack_num: %d\n", max_pack_num);
+                //printf("Seq #:%d; Time Generated: %ld; Time ack Recd: %ld; No of attempts: %d\n", seqnum, mutime, rec_time->tv_usec, tries);
                 if(debugc){
-                    //printf("Seq #:%d; Time Generated: %ld; Time ack Recd: %ld; No of attempts: %d\n", seq_no, mutime, rec_time->tv_usec, tries);
+                    printf("Seq #:%d; Time Generated: %ld; Time ack Recd: %ld; No of attempts: %d\n", seqnum, mutime, rec_time->tv_usec, tries);
                 }
                 //printf("About to block\n");
                 read(lock[1],pbuf, 1);
