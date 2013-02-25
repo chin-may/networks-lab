@@ -161,7 +161,7 @@ int main(int argc, char *argv[]){
         double throughput = ((double)(max_pack_num * pack_len * 8)) / ( end_time.tv_sec - start_time.tv_sec );
         float ter = ((float) transnum) / max_pack_num;
         
-        printf("PACKET_GEN_RATE: %d Packet length: %d Throughput: %lf Transmission efficiency ratio: %f\n", pack_rate, pack_len, throughput, ter);
+        printf("PACKET_GEN_RATE: %d PACKET_LENGTH: %d Throughput: %lf Transmission Efficiency Ratio: %f\n", pack_rate, pack_len, throughput, ter);
         close(sock);
         return 0;
     }

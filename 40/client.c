@@ -49,10 +49,16 @@ int main(int argc, char** argv){
     //printf("%s:%d\n", addr, port);
 
     char oopt;
-    while ((oopt = getopt(argc, argv, "a:p:")) != -1){
+    while ((oopt = getopt(argc, argv, "p:n:e:")) != -1){
         switch(oopt){
             case 'p':
                 port = atoi(optarg);
+                break;
+            case 'n':
+                max_pack_num = atoi(optarg);
+                break;
+            case 'e':
+                probab = atof(optarg);
         }
     }
     printf("%d\n", port);
@@ -77,20 +83,34 @@ int main(int argc, char** argv){
     int ackednum = 0;
 
     long start_time, ack_time;
+    int corrupted = 0;
+    struct timeval recd_time;
 
     while (ackednum < max_pack_num){
 
-        bytes_read = unrel_recvfrom(sock,recv_data,1024,0,
-                (struct sockaddr *)&client_addr, &addr_len, probab);
-        printf("Recd\n");
+        bytes_read = recvfrom(sock,recv_data,1024,0,
+                (struct sockaddr *)&client_addr, &addr_len);
+        gettimeofday(&recd_time,NULL);
+        if(random()%100 < (probab*100)){
+            corrupted = 1;
+            printf("Seq #:%d; Time Received: %lds %ldMus Corrupted: Yes; Accepted: No\n", recv_data[0], recd_time.tv_sec%100, recd_time.tv_usec);
+        }
+        else{
+            corrupted = 0;
+            printf("Seq #:%d; Time Received: %lds %ldMus Corrupted: No; Accepted: ", recv_data[0], recd_time.tv_sec%100, recd_time.tv_usec);
 
-        if(recv_data[0] == exp_seq){
-            send_data[0] = exp_seq;
-            sendto(sock, send_data, 1, 0,
-                    (struct sockaddr *)&client_addr, sizeof(struct sockaddr));
+            if(recv_data[0] == exp_seq){
+                printf("Yes\n");
+                send_data[0] = exp_seq;
+                sendto(sock, send_data, 1, 0,
+                        (struct sockaddr *)&client_addr, sizeof(struct sockaddr));
 
-            exp_seq = exp_seq?0:1;
-            ackednum++;
+                exp_seq = exp_seq?0:1;
+                ackednum++;
+            }
+            else{
+                printf("No\n");
+            }
         }
     }
 
