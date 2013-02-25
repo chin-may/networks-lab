@@ -61,7 +61,7 @@ int main(int argc, char *argv[]){
         }
     }
     int ackednum = 0;
-    if(fork() == 0){
+    if(fork() != 0){
         int transnum = 0;
         struct hostent *host = gethostbyname(addr);
         printf("Connecting to %s %d\n",addr, port);
@@ -98,7 +98,7 @@ int main(int argc, char *argv[]){
         ackednum = 0;
         int seqnum = 0;
         char pbuf[sizeof(long)];
-        unsigned long mutime;
+        unsigned long mutime, sectime;
         char *data = malloc(pack_len + 1);
         int tries = 1;
         FILE *p_outptr = fdopen(p_out, "r");
@@ -142,18 +142,24 @@ int main(int argc, char *argv[]){
                 mutime = 0;
                 int i;
                 for(i = 0; i < sizeof(long); i++){
-                    //putchar(pbuf[i]);
                     mutime <<= 8;
                     mutime |= pbuf[i] & 0xff;
+                }
+
+                sectime = 0;
+                read(p_out, pbuf, sizeof(long));
+                for(i = 0; i < sizeof(long); i++){
+                    sectime <<= 8;
+                    sectime |= pbuf[i] & 0xff;
                 }
                 //printf("pipe out: %lx\n", mutime);
             }
         }
         gettimeofday(&end_time, NULL);
-        float throughput = ((float)(max_pack_num * pack_len * 8)) / ( end_time.tv_sec - start_time.tv_sec );
+        double throughput = ((double)(max_pack_num * pack_len * 8)) / ( end_time.tv_sec - start_time.tv_sec );
         float ter = ((float) transnum) / max_pack_num;
         
-        printf("PACKET_GEN_RATE: %d Packet length: %d Throughput: %f Transmission efficiency ratio: %f", pack_rate, pack_len, throughput, ter);
+        printf("PACKET_GEN_RATE: %d Packet length: %d Throughput: %lf Transmission efficiency ratio: %f\n", pack_rate, pack_len, throughput, ter);
         close(sock);
         return 0;
     }
@@ -166,7 +172,8 @@ int main(int argc, char *argv[]){
         int i;
         struct timeval *gen_time = malloc(sizeof(struct timeval));
         FILE *p_inptr = fdopen(p_in, "w");
-        while(ackednum < max_pack_num){
+        int gennum = 0;
+        while(gennum < max_pack_num){
             st->tv_nsec = random()%(avg_delay*2 + 1);
             //printf("--about to sleep\n");
             nanosleep(st,NULL);
@@ -176,13 +183,18 @@ int main(int argc, char *argv[]){
             for(i = 0; i < sizeof(long); i++){
                 //out_buf[i] = (gen_time->tv_usec >> (sizeof(long) - (i + 1)*8)) & 0xFF;
                 out_buf[i] = (gen_time->tv_usec >> (sizeof(long) - (i +1) )*8 ) & 0xff ;
-
             }
+            for(i = 0; i < sizeof(long); i++){
+                //out_buf[i] = (gen_time->tv_usec >> (sizeof(long) - (i + 1)*8)) & 0xFF;
+                out_buf[i] = (gen_time->tv_sec >> (sizeof(long) - (i +1) )*8 ) & 0xff ;
+            }
+            gennum++;
             //printf("--about to write\n");
            // fprintf(p_inptr, "%ld",gen_time->tv_usec);
             //fflush(p_inptr);
             write(p_in, out_buf, sizeof(long));
             write(lock[0], out_buf, 1);
         }
+        exit(0);
     }
 }
