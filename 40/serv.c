@@ -12,6 +12,8 @@
 #include <fcntl.h>
 
 int main(int argc, char *argv[]){
+    struct timeval start_time, end_time;
+    gettimeofday(&start_time, NULL);
     int pipe_fd[2];
     int lock[2];
     pipe(pipe_fd);
@@ -48,7 +50,6 @@ int main(int argc, char *argv[]){
                 pack_rate = atoi(optarg);
                 break;
             case 'd':
-                atoi(optarg);
                 debugc = 1;
                 break;
             case 'l':
@@ -61,6 +62,7 @@ int main(int argc, char *argv[]){
     }
     int ackednum = 0;
     if(fork() == 0){
+        int transnum = 0;
         struct hostent *host = gethostbyname(addr);
         printf("Connecting to %s %d\n",addr, port);
         server_addr.sin_family = AF_INET;
@@ -104,7 +106,8 @@ int main(int argc, char *argv[]){
         while(ackednum < max_pack_num){
             data[0] = seqnum;
             sendto(sock, data, pack_len + 1, 0, (struct sockaddr*) &server_addr, sizeof(struct sockaddr));
-            printf("Sent seqno %d\n", seqnum);
+            transnum++;
+            //printf("Sent seqno %d\n", seqnum);
             FD_ZERO(&sockset);
             FD_SET(sock, &sockset);
             timeout.tv_usec = 100000;
@@ -120,11 +123,11 @@ int main(int argc, char *argv[]){
                         (struct sockaddr *)&client_addr, &addr_len);
                 gettimeofday(rec_time, NULL);
                 ackednum++;
-                printf("Got ack %d\n", seqnum);
+                //printf("Got ack %d\n", seqnum);
                 seqnum = seqnum?0:1;
-                tries = 0;
+                tries = 1;
                 //printf("debug: %d\n", debugc);
-                printf("max_pack_num: %d\n", max_pack_num);
+                //printf("max_pack_num: %d\n", max_pack_num);
                 //printf("Seq #:%d; Time Generated: %ld; Time ack Recd: %ld; No of attempts: %d\n", seqnum, mutime, rec_time->tv_usec, tries);
                 if(debugc){
                     printf("Seq #:%d; Time Generated: %ld; Time ack Recd: %ld; No of attempts: %d\n", seqnum, mutime, rec_time->tv_usec, tries);
@@ -146,7 +149,11 @@ int main(int argc, char *argv[]){
                 //printf("pipe out: %lx\n", mutime);
             }
         }
-        printf("");
+        gettimeofday(&end_time, NULL);
+        float throughput = ((float)(max_pack_num * pack_len * 8)) / ( end_time.tv_sec - start_time.tv_sec );
+        float ter = ((float) transnum) / max_pack_num;
+        
+        printf("PACKET_GEN_RATE: %d Packet length: %d Throughput: %f Transmission efficiency ratio: %f", pack_rate, pack_len, throughput, ter);
         close(sock);
         return 0;
     }
