@@ -12,6 +12,7 @@
 #include <fcntl.h>
 
 int main(int argc, char *argv[]){
+    srandom(time(NULL));
     struct timeval start_time, end_time;
     gettimeofday(&start_time, NULL);
     int pipe_fd[2];
@@ -158,10 +159,10 @@ int main(int argc, char *argv[]){
             }
         }
         gettimeofday(&end_time, NULL);
-        double throughput = ((double)(max_pack_num * pack_len * 8)) / ( end_time.tv_sec - start_time.tv_sec );
+        double throughput = (((double)(max_pack_num * pack_len * 8)) / 1000) / ( end_time.tv_sec - start_time.tv_sec );
         float ter = ((float) transnum) / max_pack_num;
         
-        printf("PACKET_GEN_RATE: %d PACKET_LENGTH: %d Throughput: %lf Transmission Efficiency Ratio: %f\n", pack_rate, pack_len, throughput, ter);
+        printf("PACKET_GEN_RATE: %d PACKET_LENGTH: %d Throughput: %lfMbps Transmission Efficiency Ratio: %f\n", pack_rate, pack_len, throughput, ter);
         close(sock);
         return 0;
     }

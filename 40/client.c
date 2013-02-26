@@ -25,6 +25,7 @@ ssize_t unrel_recvfrom(int sockfd, void *buf, size_t len, int flags,
 }
 
 int main(int argc, char** argv){
+    srandom(time(NULL));
     int sock;
     sock = socket(AF_INET, SOCK_DGRAM, 0);
     if(sock == -1){
@@ -91,7 +92,7 @@ int main(int argc, char** argv){
         bytes_read = recvfrom(sock,recv_data,1024,0,
                 (struct sockaddr *)&client_addr, &addr_len);
         gettimeofday(&recd_time,NULL);
-        if(random()%100 < (probab*100)){
+        if(random()%1000000 < (probab*1000000)){
             corrupted = 1;
             printf("Seq #:%d; Time Received: %lds %ldMus Corrupted: Yes; Accepted: No\n", recv_data[0], recd_time.tv_sec%100, recd_time.tv_usec);
         }
