@@ -1,0 +1,182 @@
+Script started on Wednesday 27 February 2013 03:37:47 AM IST
+]0;chinmay@aaharan: ~chinmay@aaharan:~$ less typescript [1Pvim[C[C[C[C[C[C[C[C[C[C[C[Ccat[C[C[C[C[C[C[C[C[C[C[C[C[9Pscriptrm typescript ./receiver -p 2059 -n 10 -e 0.000011[K
+2059
+Seq #:0; Time Received: 9s 495259Mus Corrupted: No; Accepted: Yes
+Seq #:0; Time Received: 9s 595412Mus Corrupted: No; Accepted: No
+Seq #:0; Time Received: 9s 695557Mus Corrupted: No; Accepted: No
+Seq #:0; Time Received: 9s 795686Mus Corrupted: No; Accepted: No
+Seq #:0; Time Received: 9s 895839Mus Corrupted: No; Accepted: No
+Seq #:0; Time Received: 9s 995991Mus Corrupted: No; Accepted: No
+Seq #:0; Time Received: 10s 96122Mus Corrupted: No; Accepted: No
+Seq #:0; Time Received: 10s 196313Mus Corrupted: No; Accepted: No
+Seq #:0; Time Received: 10s 296443Mus Corrupted: No; Accepted: No
+Seq #:0; Time Received: 10s 396618Mus Corrupted: No; Accepted: No
+Seq #:0; Time Received: 10s 496757Mus Corrupted: No; Accepted: No
+Seq #:0; Time Received: 10s 596903Mus Corrupted: No; Accepted: No
+Seq #:0; Time Received: 10s 697033Mus Corrupted: No; Accepted: No
+Seq #:0; Time Received: 10s 797184Mus Corrupted: No; Accepted: No
+Seq #:0; Time Received: 10s 897377Mus Corrupted: No; Accepted: No
+Seq #:0; Time Received: 10s 997549Mus Corrupted: No; Accepted: No
+Seq #:0; Time Received: 11s 97712Mus Corrupted: No; Accepted: No
+Seq #:0; Time Received: 11s 197868Mus Corrupted: No; Accepted: No
+Seq #:0; Time Received: 11s 298068Mus Corrupted: No; Accepted: No
+Seq #:0; Time Received: 11s 398192Mus Corrupted: No; Accepted: No
+Seq #:0; Time Received: 11s 498333Mus Corrupted: No; Accepted: No
+Seq #:0; Time Received: 11s 598505Mus Corrupted: No; Accepted: No
+Seq #:0; Time Received: 11s 698620Mus Corrupted: No; Accepted: No
+Seq #:0; Time Received: 11s 798827Mus Corrupted: No; Accepted: No
+Seq #:0; Time Received: 11s 898936Mus Corrupted: No; Accepted: No
+Seq #:0; Time Received: 11s 999109Mus Corrupted: No; Accepted: No
+Seq #:0; Time Received: 12s 99263Mus Corrupted: No; Accepted: No
+Seq #:0; Time Received: 12s 199414Mus Corrupted: No; Accepted: No
+Seq #:1; Time Received: 12s 209281Mus Corrupted: No; Accepted: Yes
+Seq #:0; Time Received: 12s 216081Mus Corrupted: No; Accepted: Yes
+Seq #:1; Time Received: 12s 218356Mus Corrupted: No; Accepted: Yes
+Seq #:0; Time Received: 12s 219787Mus Corrupted: No; Accepted: Yes
+Seq #:1; Time Received: 12s 221036Mus Corrupted: No; Accepted: Yes
+Seq #:0; Time Received: 12s 221937Mus Corrupted: No; Accepted: Yes
+Seq #:1; Time Received: 12s 222797Mus Corrupted: No; Accepted: Yes
+Seq #:0; Time Received: 12s 223517Mus Corrupted: No; Accepted: Yes
+Seq #:1; Time Received: 12s 224703Mus Corrupted: No; Accepted: Yes
+]0;chinmay@aaharan: ~chinmay@aaharan:~$ ./receiver -p 2059 -n 10 -e 0.01
+2059
+Seq #:0; Time Received: 31s 779163Mus Corrupted: No; Accepted: Yes
+Seq #:1; Time Received: 31s 837053Mus Corrupted: No; Accepted: Yes
+Seq #:0; Time Received: 31s 934113Mus Corrupted: No; Accepted: Yes
+Seq #:1; Time Received: 32s 114687Mus Corrupted: No; Accepted: Yes
+Seq #:0; Time Received: 32s 146192Mus Corrupted: No; Accepted: Yes
+Seq #:1; Time Received: 32s 250686Mus Corrupted: No; Accepted: Yes
+Seq #:0; Time Received: 32s 414232Mus Corrupted: No; Accepted: Yes
+Seq #:1; Time Received: 32s 476182Mus Corrupted: No; Accepted: Yes
+Seq #:0; Time Received: 32s 664311Mus Corrupted: No; Accepted: Yes
+Seq #:1; Time Received: 32s 753221Mus Corrupted: No; Accepted: Yes
+]0;chinmay@aaharan: ~chinmay@aaharan:~$ ./receiver -p 2059 -n 10 -e 0.01
+2059
+Seq #:0; Time Received: 51s 15089Mus Corrupted: No; Accepted: Yes
+Seq #:0; Time Received: 51s 115254Mus Corrupted: No; Accepted: No
+Seq #:0; Time Received: 51s 215417Mus Corrupted: No; Accepted: No
+Seq #:0; Time Received: 51s 315627Mus Corrupted: No; Accepted: No
+Seq #:0; Time Received: 51s 415743Mus Corrupted: No; Accepted: No
+Seq #:0; Time Received: 51s 515903Mus Corrupted: No; Accepted: No
+Seq #:0; Time Received: 51s 616066Mus Corrupted: No; Accepted: No
+Seq #:0; Time Received: 51s 716484Mus Corrupted: No; Accepted: No
+Seq #:0; Time Received: 51s 816380Mus Corrupted: No; Accepted: No
+Seq #:0; Time Received: 51s 916497Mus Corrupted: No; Accepted: No
+Seq #:0; Time Received: 52s 16621Mus Corrupted: No; Accepted: No
+Seq #:0; Time Received: 52s 116834Mus Corrupted: No; Accepted: No
+Seq #:1; Time Received: 52s 215500Mus Corrupted: No; Accepted: Yes
+Seq #:0; Time Received: 52s 221344Mus Corrupted: No; Accepted: Yes
+Seq #:1; Time Received: 52s 223617Mus Corrupted: No; Accepted: Yes
+Seq #:0; Time Received: 52s 225316Mus Corrupted: No; Accepted: Yes
+Seq #:1; Time Received: 52s 229125Mus Corrupted: No; Accepted: Yes
+Seq #:0; Time Received: 52s 230784Mus Corrupted: No; Accepted: Yes
+Seq #:1; Time Received: 52s 231730Mus Corrupted: No; Accepted: Yes
+Seq #:0; Time Received: 52s 233551Mus Corrupted: No; Accepted: Yes
+Seq #:1; Time Received: 52s 234020Mus Corrupted: No; Accepted: Yes
+]0;chinmay@aaharan: ~chinmay@aaharan:~$ ./receiver -p 2059 -n 10 -e 0.01
+2059
+Seq #:0; Time Received: 62s 973084Mus Corrupted: No; Accepted: Yes
+Seq #:1; Time Received: 62s 979240Mus Corrupted: No; Accepted: Yes
+Seq #:0; Time Received: 62s 986407Mus Corrupted: No; Accepted: Yes
+Seq #:1; Time Received: 62s 993124Mus Corrupted: No; Accepted: Yes
+Seq #:0; Time Received: 62s 994883Mus Corrupted: No; Accepted: Yes
+Seq #:1; Time Received: 62s 997628Mus Corrupted: No; Accepted: Yes
+Seq #:0; Time Received: 63s 7380Mus Corrupted: No; Accepted: Yes
+Seq #:1; Time Received: 63s 16758Mus Corrupted: No; Accepted: Yes
+Seq #:0; Time Received: 63s 25218Mus Corrupted: No; Accepted: Yes
+Seq #:1; Time Received: 63s 28495Mus Corrupted: No; Accepted: Yes
+]0;chinmay@aaharan: ~chinmay@aaharan:~$ ./receiver -p 2059 -n 10 -e 0.01[K0001
+2059
+Seq #:0; Time Received: 15s 491660Mus Corrupted: No; Accepted: Yes
+Seq #:0; Time Received: 15s 591806Mus Corrupted: No; Accepted: No
+Seq #:0; Time Received: 15s 691955Mus Corrupted: No; Accepted: No
+Seq #:0; Time Received: 15s 792089Mus Corrupted: No; Accepted: No
+Seq #:0; Time Received: 15s 892238Mus Corrupted: No; Accepted: No
+Seq #:0; Time Received: 15s 992410Mus Corrupted: No; Accepted: No
+Seq #:0; Time Received: 16s 92572Mus Corrupted: No; Accepted: No
+Seq #:0; Time Received: 16s 192722Mus Corrupted: No; Accepted: No
+Seq #:0; Time Received: 16s 292850Mus Corrupted: No; Accepted: No
+Seq #:0; Time Received: 16s 393020Mus Corrupted: No; Accepted: No
+Seq #:0; Time Received: 16s 493174Mus Corrupted: No; Accepted: No
+Seq #:0; Time Received: 16s 593345Mus Corrupted: No; Accepted: No
+
+Seq #:0; Time Received: 16s 693484Mus Corrupted: No; Accepted: No
+Seq #:0; Time Received: 16s 793650Mus Corrupted: No; Accepted: No
+Seq #:0; Time Received: 16s 893801Mus Corrupted: No; Accepted: No
+Seq #:0; Time Received: 16s 993972Mus Corrupted: No; Accepted: No
+Seq #:0; Time Received: 17s 94106Mus Corrupted: No; Accepted: No
+Seq #:0; Time Received: 17s 194256Mus Corrupted: No; Accepted: No
+Seq #:0; Time Received: 17s 294437Mus Corrupted: No; Accepted: No
+Seq #:0; Time Received: 17s 394581Mus Corrupted: No; Accepted: No
+Seq #:0; Time Received: 17s 494754Mus Corrupted: No; Accepted: No
+Seq #:0; Time Received: 17s 594936Mus Corrupted: No; Accepted: No
+Seq #:0; Time Received: 17s 695060Mus Corrupted: No; Accepted: No
+Seq #:0; Time Received: 17s 795212Mus Corrupted: No; Accepted: No
+Seq #:0; Time Received: 17s 895389Mus Corrupted: No; Accepted: No
+Seq #:0; Time Received: 17s 995534Mus Corrupted: No; Accepted: No
+Seq #:0; Time Received: 18s 95663Mus Corrupted: No; Accepted: No
+Seq #:0; Time Received: 18s 195855Mus Corrupted: No; Accepted: No
+Seq #:1; Time Received: 18s 217523Mus Corrupted: No; Accepted: Yes
+Seq #:0; Time Received: 18s 226739Mus Corrupted: No; Accepted: Yes
+Seq #:1; Time Received: 18s 229893Mus Corrupted: No; Accepted: Yes
+Seq #:0; Time Received: 18s 231941Mus Corrupted: No; Accepted: Yes
+Seq #:1; Time Received: 18s 232843Mus Corrupted: No; Accepted: Yes
+Seq #:0; Time Received: 18s 234972Mus Corrupted: No; Accepted: Yes
+Seq #:1; Time Received: 18s 236876Mus Corrupted: No; Accepted: Yes
+Seq #:0; Time Received: 18s 239210Mus Corrupted: No; Accepted: Yes
+Seq #:1; Time Received: 18s 239684Mus Corrupted: No; Accepted: Yes
+]0;chinmay@aaharan: ~chinmay@aaharan:~$ 
+]0;chinmay@aaharan: ~chinmay@aaharan:~$ ./receiver -p 2059 -n 10 -e 0.00001
+2059
+Seq #:0; Time Received: 25s 587284Mus Corrupted: No; Accepted: Yes
+Seq #:1; Time Received: 25s 757125Mus Corrupted: No; Accepted: Yes
+Seq #:0; Time Received: 25s 953418Mus Corrupted: No; Accepted: Yes
+Seq #:1; Time Received: 26s 132829Mus Corrupted: No; Accepted: Yes
+Seq #:0; Time Received: 26s 211716Mus Corrupted: No; Accepted: Yes
+Seq #:1; Time Received: 26s 406110Mus Corrupted: No; Accepted: Yes
+Seq #:0; Time Received: 26s 438829Mus Corrupted: No; Accepted: Yes
+Seq #:1; Time Received: 26s 532512Mus Corrupted: No; Accepted: Yes
+Seq #:0; Time Received: 26s 672138Mus Corrupted: No; Accepted: Yes
+Seq #:1; Time Received: 26s 682490Mus Corrupted: No; Accepted: Yes
+]0;chinmay@aaharan: ~chinmay@aaharan:~$ ./receiver -p 2059 -n 10 -e 0.00001
+2059
+
+Seq #:0; Time Received: 41s 994220Mus Corrupted: No; Accepted: Yes
+Seq #:1; Time Received: 42s 120573Mus Corrupted: No; Accepted: Yes
+Seq #:0; Time Received: 42s 169787Mus Corrupted: No; Accepted: Yes
+Seq #:1; Time Received: 42s 201901Mus Corrupted: No; Accepted: Yes
+Seq #:0; Time Received: 42s 356391Mus Corrupted: No; Accepted: Yes
+Seq #:1; Time Received: 42s 538689Mus Corrupted: No; Accepted: Yes
+Seq #:0; Time Received: 42s 553887Mus Corrupted: No; Accepted: Yes
+Seq #:1; Time Received: 42s 714706Mus Corrupted: No; Accepted: Yes
+Seq #:0; Time Received: 42s 728671Mus Corrupted: No; Accepted: Yes
+Seq #:1; Time Received: 42s 813917Mus Corrupted: No; Accepted: Yes
+]0;chinmay@aaharan: ~chinmay@aaharan:~$ 
+]0;chinmay@aaharan: ~chinmay@aaharan:~$ ./receiver -p 2059 -n 10 -e 0.00001
+2059
+Seq #:0; Time Received: 66s 15709Mus Corrupted: No; Accepted: Yes
+Seq #:0; Time Received: 66s 115847Mus Corrupted: No; Accepted: No
+Seq #:1; Time Received: 66s 210832Mus Corrupted: No; Accepted: Yes
+Seq #:0; Time Received: 66s 213175Mus Corrupted: No; Accepted: Yes
+Seq #:1; Time Received: 66s 215235Mus Corrupted: No; Accepted: Yes
+Seq #:0; Time Received: 66s 218330Mus Corrupted: No; Accepted: Yes
+Seq #:1; Time Received: 66s 223060Mus Corrupted: No; Accepted: Yes
+Seq #:0; Time Received: 66s 224839Mus Corrupted: No; Accepted: Yes
+Seq #:1; Time Received: 66s 226684Mus Corrupted: No; Accepted: Yes
+Seq #:0; Time Received: 66s 230390Mus Corrupted: No; Accepted: Yes
+Seq #:1; Time Received: 66s 233606Mus Corrupted: No; Accepted: Yes
+]0;chinmay@aaharan: ~chinmay@aaharan:~$ ./receiver -p 2059 -n 10 -e 0.00001
+2059
+Seq #:0; Time Received: 76s 972040Mus Corrupted: No; Accepted: Yes
+Seq #:1; Time Received: 76s 978536Mus Corrupted: No; Accepted: Yes
+Seq #:0; Time Received: 76s 985275Mus Corrupted: No; Accepted: Yes
+Seq #:1; Time Received: 76s 989655Mus Corrupted: No; Accepted: Yes
+Seq #:0; Time Received: 76s 991806Mus Corrupted: No; Accepted: Yes
+Seq #:1; Time Received: 76s 996763Mus Corrupted: No; Accepted: Yes
+Seq #:0; Time Received: 77s 1576Mus Corrupted: No; Accepted: Yes
+Seq #:1; Time Received: 77s 9811Mus Corrupted: No; Accepted: Yes
+Seq #:0; Time Received: 77s 13394Mus Corrupted: No; Accepted: Yes
+Seq #:1; Time Received: 77s 16854Mus Corrupted: No; Accepted: Yes
+]0;chinmay@aaharan: ~chinmay@aaharan:~$ exit
+
+Script done on Wednesday 27 February 2013 03:41:21 AM IST
