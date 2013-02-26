@@ -12,19 +12,20 @@
 
 ssize_t unrel_recvfrom(int sockfd, void *buf, size_t len, int flags,
         struct sockaddr *src_addr, socklen_t *addrlen, float probab){
-    int probab_int = (int) (probab*100);
-    int r = random() % 100;
+    int probab_int = (int) (probab*1000000);
+    int r = random() % 1000000;
     while(r < probab_int){
         char* tmp = malloc(len);
         recvfrom(sockfd, tmp, len, flags, src_addr, addrlen);
         free(tmp);
-        r = random() % 100;
+        r = random() % 1000000;
     }
     return recvfrom(sockfd, buf, len, flags, src_addr, addrlen);
 
 }
 
 int main(int argc, char** argv){
+    srandom(time(NULL));
     int sock;
     sock = socket(AF_INET, SOCK_DGRAM, 0);
     if(sock == -1){
@@ -91,7 +92,7 @@ int main(int argc, char** argv){
         bytes_read = recvfrom(sock,recv_data,1024,0,
                 (struct sockaddr *)&client_addr, &addr_len);
         gettimeofday(&recd_time,NULL);
-        if(random()%100 < (probab*100)){
+        if(random()%1000000 < (probab*1000000)){
             corrupted = 1;
             printf("Seq #:%d; Time Received: %lds %ldMus Corrupted: Yes; Accepted: No\n", recv_data[0], recd_time.tv_sec%100, recd_time.tv_usec);
         }
@@ -105,7 +106,9 @@ int main(int argc, char** argv){
                 sendto(sock, send_data, 1, 0,
                         (struct sockaddr *)&client_addr, sizeof(struct sockaddr));
 
-                exp_seq = exp_seq?0:1;
+                //exp_seq = exp_seq?0:1;
+                exp_seq++;
+                exp_seq %= 100;
                 ackednum++;
             }
             else{
