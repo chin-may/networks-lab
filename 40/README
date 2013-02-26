@@ -1,0 +1,19 @@
+Compiling:
+run `make`
+
+Testing:
+sender options:
+-d  Turn ON Debug Mode (OFF if -d flag not present)
+-s string  Receiver Name or IP address.
+-p integer  Receiver's Port Number
+-l integer  PACKET LENGTH, in bytes
+-r integer  PACKET GEN RATE, in packets per second
+-n integer  MAX PACKETS
+
+receiver options:
+-p integer  Receiver's Port Number
+-n integer  MAX PACKETS
+-e double  RANDOM DROP PROB
+
+Port number to use:
+2059

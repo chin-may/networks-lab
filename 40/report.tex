@@ -1,0 +1,37 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+
+\author{Chinmay Bapat (CS10B059)}
+\title{Networks Lab 4 - Stop and Wait Protocol}
+\begin{document}
+\maketitle
+\section{Testing}
+The receiver was run on a computer in the DCF and sender on my laptop.
+
+For Packet generation rate 10:
+
+\begin{tabular} {l l l l }
+Packet Length & Error Probablity & Throughput (Mbps) & Transmission Efficiency Ratio\\ \hline
+128 & 0.01 & 5.12 & 3.7\\
+128 & 0.00001 & 10.24 & 1\\
+1024 & 0.01 & 81.92 & 1\\
+1024 & 0.00001 & inf & 1\\
+\end{tabular}
+
+
+For Packet generation rate 200:
+
+\begin{tabular} {l l l l }
+Packet Length & Error Probablity & Throughput (Mbps) & Transmission Efficiency Ratio\\ \hline
+128 & 0.01 & 10.24 & 2.1\\
+128 & 0.00001 & inf & 1.1\\
+1024 & 0.01 & inf & 1\\
+1024 & 0.00001 & inf & 1\\
+\end{tabular}
+
+\section{Observation}
+Sometimes, the first packet was sent multiple times (around 10)
+even though it had been acknowledged the first time. The timeout was occuring
+before the acknowledgement was received.
+
+\end{document}

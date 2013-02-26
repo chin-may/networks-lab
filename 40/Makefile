@@ -5,16 +5,13 @@ SH = bash
 CFLAGS = -g
 LDFLAGS = -lm
 
-all: sender receiver
+all: sender.c receiver.c
+	gcc sender.c -o sender
+	gcc receiver.c -o receiver
 
-sender: sender.o
-	gcc -c $(CFLAGS) $< -o $@
 
-receiver: receiver.o
-	gcc -c $(CFLAGS) $< -o $@
+.PHONY: clean 
 
-sender.o: sender.c
-	gcc -c $(CFLAGS) $< -o $@
-
-receiver.o: receiver.c
-	gcc -c $(CFLAGS) $< -o $@
+clean:
+	rm -rf sender
+	rm -rf receiver
