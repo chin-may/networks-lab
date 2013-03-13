@@ -2,6 +2,8 @@ Compiling:
 run `make`
 
 Testing:
+sender sends packets and displays information about all packets sent. In debug
+mode it also displays information about each individual packet.
 sender options:
 -d  Turn ON Debug Mode (OFF if -d flag not present)
 -s string  Receiver Name or IP address.
@@ -10,6 +12,7 @@ sender options:
 -r integer  PACKET GEN RATE, in packets per second
 -n integer  MAX PACKETS
 
+receiver receives the packets and displays information about each packet received.
 receiver options:
 -p integer  Receiver's Port Number
 -n integer  MAX PACKETS

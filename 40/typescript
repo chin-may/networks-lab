@@ -1,0 +1,57 @@
+Script started on Wed Feb 27 15:26:49 2013
+]0;chinmay@chinarch:~/dev/networks/40[?1034h]0;chinmay@chinarch: ~/dev/networks/40chinmay@chinarch:~/dev/networks/40$ ./sender -s 10.6.15.112 -p 2059 -r 200 -l 1024 -n 50 [1P[1P[1P[1@1[1@0 -l 1024[1P[1P[1P[1@2[1@8 -n 50 0 
+PACKET_GEN_RATE: 10 PACKET_LENGTH: 128 Throughput: 10.032756Kbps Transmission Efficiency Ratio: 1.018000
+]0;chinmay@chinarch:~/dev/networks/40]0;chinmay@chinarch: ~/dev/networks/40chinmay@chinarch:~/dev/networks/40$ [K./sender -s 10.6.15.112 -p 2059 -r 10 -l 128 -n 500 0 -l 128[1P[1P[1P[1@1[1@0[1@2[1@4
+PACKET_GEN_RATE: 10 PACKET_LENGTH: 1024 Throughput: 87.094628Kbps Transmission Efficiency Ratio: 1.012000
+]0;chinmay@chinarch:~/dev/networks/40]0;chinmay@chinarch: ~/dev/networks/40chinmay@chinarch:~/dev/networks/40$ [K./sender -s 10.6.15.112 -p 2059 -r 10 -l 1024 -n 500 [1P28 -n 500 
+^C
+]0;chinmay@chinarch:~/dev/networks/40]0;chinmay@chinarch: ~/dev/networks/40chinmay@chinarch:~/dev/networks/40$ [K./sender -s 10.6.15.112 -p 2059 -r 10 -l 128 -n 500 
+PACKET_GEN_RATE: 10 PACKET_LENGTH: 128 Throughput: 9.944407Kbps Transmission Efficiency Ratio: 1.002000
+]0;chinmay@chinarch:~/dev/networks/40]0;chinmay@chinarch: ~/dev/networks/40chinmay@chinarch:~/dev/networks/40$ [K./sender -s 10.6.15.112 -p 2059 -r 10 -l 128 -n 500 [1@024 -n 500 
+PACKET_GEN_RATE: 10 PACKET_LENGTH: 1024 Throughput: 85.317100Kbps Transmission Efficiency Ratio: 1.078000
+]0;chinmay@chinarch:~/dev/networks/40]0;chinmay@chinarch: ~/dev/networks/40chinmay@chinarch:~/dev/networks/40$ [K./sender -s 10.6.15.112 -p 2059 -r 10 -l 1024 -n 500 [1P28 -n 500 [1P[1P[1@2[1@0[1@0
+PACKET_GEN_RATE: 200 PACKET_LENGTH: 128 Throughput: 192.756715Kbps Transmission Efficiency Ratio: 1.008000
+]0;chinmay@chinarch:~/dev/networks/40]0;chinmay@chinarch: ~/dev/networks/40chinmay@chinarch:~/dev/networks/40$ [K./sender -s 10.6.15.112 -p 2059 -r 200 -l 128 -n 500 [1P[1P[1@0[1@2[1@4
+PACKET_GEN_RATE: 200 PACKET_LENGTH: 1024 Throughput: 1602.318354Kbps Transmission Efficiency Ratio: 1.014000
+]0;chinmay@chinarch:~/dev/networks/40]0;chinmay@chinarch: ~/dev/networks/40chinmay@chinarch:~/dev/networks/40$ [K./sender -s 10.6.15.112 -p 2059 -r 200 -l 1024 -n 500 [1P28 -n 500 
+PACKET_GEN_RATE: 200 PACKET_LENGTH: 128 Throughput: 201.336845Kbps Transmission Efficiency Ratio: 1.000000
+]0;chinmay@chinarch:~/dev/networks/40]0;chinmay@chinarch: ~/dev/networks/40chinmay@chinarch:~/dev/networks/40$ [K./sender -s 10.6.15.112 -p 2059 -r 200 -l 128 -n 500 [1@024 -n 500 
+PACKET_GEN_RATE: 200 PACKET_LENGTH: 1024 Throughput: 1604.896187Kbps Transmission Efficiency Ratio: 1.000000
+]0;chinmay@chinarch:~/dev/networks/40]0;chinmay@chinarch: ~/dev/networks/40chinmay@chinarch:~/dev/networks/40$ [K[H[2J]0;chinmay@chinarch: ~/dev/networks/40chinmay@chinarch:~/dev/networks/40$ pdflatex report.tex 
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012/Arch Linux)
+ restricted \write18 enabled.
+entering extended mode
+(./report.tex
+LaTeX2e <2011/06/27>
+Babel <v3.8m> and hyphenation patterns for english, dumylang, nohyphenation, ge
+rman-x-2012-05-30, ngerman-x-2012-05-30, afrikaans, ancientgreek, ibycus, arabi
+c, armenian, basque, bulgarian, catalan, pinyin, coptic, croatian, czech, danis
+h, dutch, ukenglish, usenglishmax, esperanto, estonian, ethiopic, farsi, finnis
+h, french, friulan, galician, german, ngerman, swissgerman, monogreek, greek, h
+ungarian, icelandic, assamese, bengali, gujarati, hindi, kannada, malayalam, ma
+rathi, oriya, panjabi, tamil, telugu, indonesian, interlingua, irish, italian, 
+kurmanji, latin, latvian, lithuanian, mongolian, mongolianlmc, bokmal, nynorsk,
+ polish, portuguese, romanian, romansh, russian, sanskrit, serbian, serbianc, s
+lovak, slovenian, spanish, swedish, turkish, turkmen, ukrainian, uppersorbian, 
+welsh, loaded.
+(/usr/share/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2007/10/19 v1.4h Standard LaTeX document class
+(/usr/share/texmf-dist/tex/latex/base/size11.clo))
+(/usr/share/texmf-dist/tex/latex/geometry/geometry.sty
+(/usr/share/texmf-dist/tex/latex/graphics/keyval.sty)
+(/usr/share/texmf-dist/tex/generic/oberdiek/ifpdf.sty)
+(/usr/share/texmf-dist/tex/generic/oberdiek/ifvtex.sty)
+(/usr/share/texmf-dist/tex/generic/ifxetex/ifxetex.sty)) (./report.aux)
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+[1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] (./report.aux) )</usr/sh
+are/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texmf-dist
+/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texmf-dist/fonts/type1/pu
+blic/amsfonts/cm/cmr12.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/c
+m/cmr17.pfb>
+Output written on report.pdf (1 page, 54246 bytes).
+Transcript written on report.log.
+]0;chinmay@chinarch:~/dev/networks/40]0;chinmay@chinarch: ~/dev/networks/40chinmay@chinarch:~/dev/networks/40$ okular pdf   report.pdf re^C
+]0;chinmay@chinarch:~/dev/networks/40]0;chinmay@chinarch: ~/dev/networks/40chinmay@chinarch:~/dev/networks/40$ exit
+
+Script done on Wed Feb 27 16:16:04 2013

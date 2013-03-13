@@ -159,10 +159,16 @@ int main(int argc, char *argv[]){
             }
         }
         gettimeofday(&end_time, NULL);
-        double throughput = (((double)(max_pack_num * pack_len * 8)) / 1000) / ( end_time.tv_sec - start_time.tv_sec );
+        double timediff = (end_time.tv_sec - start_time.tv_sec) + (end_time.tv_usec - start_time.tv_usec)/1000000.0;
+        double mu_timediff = end_time.tv_usec - start_time.tv_usec;
+        double throughput = (((double)(max_pack_num * pack_len * 8)) ) / (timediff * 1000);
+        double mu_throughput = (((double)(max_pack_num * pack_len * 8)) ) / mu_timediff;
         float ter = ((float) transnum) / max_pack_num;
-        
-        printf("PACKET_GEN_RATE: %d PACKET_LENGTH: %d Throughput: %lfMbps Transmission Efficiency Ratio: %f\n", pack_rate, pack_len, throughput, ter);
+       
+        if(timediff > 0)
+            printf("PACKET_GEN_RATE: %d PACKET_LENGTH: %d Throughput: %lfKbps Transmission Efficiency Ratio: %f\n", pack_rate, pack_len, throughput, ter);
+        else
+            printf("PACKET_GEN_RATE: %d PACKET_LENGTH: %d Throughput: %lfMbps Transmission Efficiency Ratio: %f\n", pack_rate, pack_len, mu_throughput, ter);
         close(sock);
         return 0;
     }

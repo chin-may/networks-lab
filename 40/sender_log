@@ -1,22 +1,20 @@
-Script started on Tue Feb 26 22:05:36 2013
-]0;chinmay@chinarch:~/dev/networks/40[?1034h]0;chinmay@chinarch: ~/dev/networks/40chinmay@chinarch:~/dev/networks/40$ ./sender -s 10.6.15.112 -p 2059 -r 200 -l 128 -n 10 [1@024 -n 10 [2P10 -l 128 -n 10 [1@024 -n 10 [1P28 -n 10 ssh 10.6.15.112[K./sender -s 10.6.15.112 -p 2059 -r 10 -l 128 -n 10 
-PACKET_GEN_RATE: 10 PACKET_LENGTH: 128 Throughput: 5.120000Mbps Transmission Efficiency Ratio: 3.700000
-]0;chinmay@chinarch:~/dev/networks/40]0;chinmay@chinarch: ~/dev/networks/40chinmay@chinarch:~/dev/networks/40$ [K./sender -s 10.6.15.112 -p 2059 -r 10 -l 128 -n 10 [1P[1P[1@0[1@2[1@4
-PACKET_GEN_RATE: 10 PACKET_LENGTH: 1024 Throughput: 81.920000Mbps Transmission Efficiency Ratio: 1.000000
-]0;chinmay@chinarch:~/dev/networks/40]0;chinmay@chinarch: ~/dev/networks/40chinmay@chinarch:~/dev/networks/40$ [K./sender -s 10.6.15.112 -p 2059 -r 10 -l 1024 -n 10 [1P[1P[1@2[1@0[1@0 -l 1024[1P[1P[1P[1@2[1@8
-PACKET_GEN_RATE: 200 PACKET_LENGTH: 128 Throughput: 10.240000Mbps Transmission Efficiency Ratio: 2.100000
-]0;chinmay@chinarch:~/dev/networks/40]0;chinmay@chinarch: ~/dev/networks/40chinmay@chinarch:~/dev/networks/40$ [K./sender -s 10.6.15.112 -p 2059 -r 200 -l 128 -n 10 128[1P[1P[1@0[1@2[1@4
-PACKET_GEN_RATE: 200 PACKET_LENGTH: 1024 Throughput: infMbps Transmission Efficiency Ratio: 1.000000
-]0;chinmay@chinarch:~/dev/networks/40]0;chinmay@chinarch: ~/dev/networks/40chinmay@chinarch:~/dev/networks/40$ [K./sender -s 10.6.15.112 -p 2059 -r 200 -l 1024 -n 10 [1P28 -n 10 10 -l 1024 -n 10 [1P28 -n 10 [1@200 -l 128 -n 10 [1@024 -n 10 [1P28 -n 10 [1P10 -l 128 -n 10 [1@024 -n 10 200 -l 128 -n 10 [1@024 -n 10 [K./sender -s 10.6.15.112 -p 2059 -r 200 -l 1024 -n 10 [1P28 -n 10 10 -l 1024 -n 10 [1P28 -n 10 
-PACKET_GEN_RATE: 10 PACKET_LENGTH: 128 Throughput: 1.024000Mbps Transmission Efficiency Ratio: 11.200000
-]0;chinmay@chinarch:~/dev/networks/40]0;chinmay@chinarch: ~/dev/networks/40chinmay@chinarch:~/dev/networks/40$ [K./sender -s 10.6.15.112 -p 2059 -r 10 -l 128 -n 10 
-PACKET_GEN_RATE: 10 PACKET_LENGTH: 128 Throughput: 10.240000Mbps Transmission Efficiency Ratio: 1.000000
-]0;chinmay@chinarch:~/dev/networks/40]0;chinmay@chinarch: ~/dev/networks/40chinmay@chinarch:~/dev/networks/40$ [K./sender -s 10.6.15.112 -p 2059 -r 10 -l 128 -n 10 [2@200 -l 1024 -n 10 [2P10 -l 128 -n 10 [1P[1P[1@0[1@2[1@4
-PACKET_GEN_RATE: 10 PACKET_LENGTH: 1024 Throughput: 81.920000Mbps Transmission Efficiency Ratio: 1.000000
-]0;chinmay@chinarch:~/dev/networks/40]0;chinmay@chinarch: ~/dev/networks/40chinmay@chinarch:~/dev/networks/40$ [K./sender -s 10.6.15.112 -p 2059 -r 10 -l 1024 -n 10 1024[1P[1P[1P[1@2[1@8[1P[1P[1@2[1@0[1@0
-PACKET_GEN_RATE: 200 PACKET_LENGTH: 128 Throughput: infMbps Transmission Efficiency Ratio: 1.100000
-]0;chinmay@chinarch:~/dev/networks/40]0;chinmay@chinarch: ~/dev/networks/40chinmay@chinarch:~/dev/networks/40$ [K./sender -s 10.6.15.112 -p 2059 -r 200 -l 128 -n 10 [1P[1P[1@0[1@2[1@4
-PACKET_GEN_RATE: 200 PACKET_LENGTH: 1024 Throughput: infMbps Transmission Efficiency Ratio: 1.000000
+Script started on Wed Feb 27 10:13:35 2013
+]0;chinmay@chinarch:~/dev/networks/40[?1034h]0;chinmay@chinarch: ~/dev/networks/40chinmay@chinarch:~/dev/networks/40$ ./sender          [14P(reverse-i-search)`': .': ./receiver -p 6001 -n 10 (reverse-i-search)`.': [1@/': s': ./sender -s localhost -p 6001 -r 1 -l 100 -n 8 (reverse-i-search)`./s': [1@e': [1@n': [1@d': ]0;chinmay@chinarch: ~/dev/networks/40chinmay@chinarch:~/dev/networks/40$ ./sender -s localhost -p 6001 -r 1 -l 100 -n 8 ./sender -s localhost[1P[1P[1P[1P[1P[1P[1P[1P[1P[1@1[1@0[1@.[1@6[1@.[1@1[1@5[1@.[1@1[1@1[1@2 -p 6001 [1P[1P[1P[1P[1@2[1@0[1@5[1@9 -r 1[1P[1@1[1@0 -l 100[1P[1P[1@2[1@8 -n 8[1P 5 0 
+PACKET_GEN_RATE: 10 PACKET_LENGTH: 128 Throughput: 11.012932Kbps Transmission Efficiency Ratio: 1.020000
+]0;chinmay@chinarch:~/dev/networks/40]0;chinmay@chinarch: ~/dev/networks/40chinmay@chinarch:~/dev/networks/40$ [K./sender -s 10.6.15.112 -p 2059 -r 10 -l 128 -n 50 28 [1P[1P[1@0[1@2[1@4
+PACKET_GEN_RATE: 10 PACKET_LENGTH: 1024 Throughput: 84.649821Kbps Transmission Efficiency Ratio: 1.000000
+]0;chinmay@chinarch:~/dev/networks/40]0;chinmay@chinarch: ~/dev/networks/40chinmay@chinarch:~/dev/networks/40$ [K./sender -s 10.6.15.112 -p 2059 -r 10 -l 1024 -n 50 [1P28 -n 50 
+PACKET_GEN_RATE: 10 PACKET_LENGTH: 128 Throughput: 10.482116Kbps Transmission Efficiency Ratio: 1.480000
+]0;chinmay@chinarch:~/dev/networks/40]0;chinmay@chinarch: ~/dev/networks/40chinmay@chinarch:~/dev/networks/40$ [K./sender -s 10.6.15.112 -p 2059 -r 10 -l 128 -n 50 [1@024 -n 50 
+PACKET_GEN_RATE: 10 PACKET_LENGTH: 1024 Throughput: 83.211813Kbps Transmission Efficiency Ratio: 1.000000
+]0;chinmay@chinarch:~/dev/networks/40]0;chinmay@chinarch: ~/dev/networks/40chinmay@chinarch:~/dev/networks/40$ [K./sender -s 10.6.15.112 -p 2059 -r 10 -l 1024 -n 50  [1P28 -n 50 [1P[1P[1@2[1@0[1@0
+PACKET_GEN_RATE: 200 PACKET_LENGTH: 128 Throughput: 198.178461Kbps Transmission Efficiency Ratio: 1.000000
+]0;chinmay@chinarch:~/dev/networks/40]0;chinmay@chinarch: ~/dev/networks/40chinmay@chinarch:~/dev/networks/40$ [K./sender -s 10.6.15.112 -p 2059 -r 200 -l 128 -n 50 [1P[1P[1@0[1@2[1@4
+PACKET_GEN_RATE: 200 PACKET_LENGTH: 1024 Throughput: 1620.336489Kbps Transmission Efficiency Ratio: 1.000000
+]0;chinmay@chinarch:~/dev/networks/40]0;chinmay@chinarch: ~/dev/networks/40chinmay@chinarch:~/dev/networks/40$ [K./sender -s 10.6.15.112 -p 2059 -r 200 -l 1024 -n 50 [1P28 -n 50 
+PACKET_GEN_RATE: 200 PACKET_LENGTH: 128 Throughput: 31.411081Kbps Transmission Efficiency Ratio: 1.300000
+]0;chinmay@chinarch:~/dev/networks/40]0;chinmay@chinarch: ~/dev/networks/40chinmay@chinarch:~/dev/networks/40$ [K./sender -s 10.6.15.112 -p 2059 -r 200 -l 128 -n 50 [1@024 -n 50 
+PACKET_GEN_RATE: 200 PACKET_LENGTH: 1024 Throughput: 1589.494435Kbps Transmission Efficiency Ratio: 1.000000
 ]0;chinmay@chinarch:~/dev/networks/40]0;chinmay@chinarch: ~/dev/networks/40chinmay@chinarch:~/dev/networks/40$ [Kexit
 
-Script done on Tue Feb 26 22:08:48 2013
+Script done on Wed Feb 27 10:19:04 2013
