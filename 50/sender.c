@@ -48,7 +48,8 @@ int main(int argc, char *argv[]){
     int debugc = 0;
     int pack_len;
     int window_len = 10;
-    while ((oopt = getopt(argc, argv, "dp:s:r:l:n:w:")) != -1){
+    int my_dbg = 0;
+    while ((oopt = getopt(argc, argv, "xdp:s:r:l:n:w:")) != -1){
         switch(oopt){
             case 'p':
                 port = atoi(optarg);
@@ -71,11 +72,15 @@ int main(int argc, char *argv[]){
             case 'n':
                 max_pack_num = atoi(optarg);
                 break;
+            case 'x':
+                my_dbg = 1;
         }
     }
     char **window = malloc(window_len * sizeof(char*));
     int *tries = malloc(window_len * sizeof(int));
     struct timeval **sendtime = malloc(window_len * sizeof(struct timeval *)); 
+    int *sectime_arr = malloc(window_len * sizeof(int));
+    int *mutime_arr = malloc(window_len * sizeof(int));
     int i;
     for(i = 0; i < window_len; i++){
         sendtime[i] = malloc(sizeof(struct timeval));
@@ -110,7 +115,8 @@ int main(int argc, char *argv[]){
 //      struct timeval timeout;
 //      timeout.tv_usec = 0;
 //      timeout.tv_sec = 0;
-        int mu_timeout = 10000;
+        double mu_timeout = 300000;
+        double rtt_tot = 0;
 
         struct timeval tval_zero;
         tval_zero.tv_usec = 0;
@@ -128,8 +134,13 @@ int main(int argc, char *argv[]){
         char *data = malloc(pack_len + 1);
         FILE *p_outptr = fdopen(p_out, "r");
         struct timeval *rec_time = malloc(sizeof(struct timeval));
-
+        int set_tout = 1;
         while(ackednum < max_pack_num){
+            if(set_tout && ackednum > 10){
+                mu_timeout = rtt_tot * 2 / ackednum;
+                //printf("timeout is now %lf mus\n", mu_timeout);
+                set_tout = 0;
+            }
             fd_set pipeset;
             FD_ZERO(&pipeset);
             FD_SET(lock[0], &pipeset);
@@ -150,16 +161,20 @@ int main(int argc, char *argv[]){
                     sectime <<= 8;
                     sectime |= pbuf[i] & 0xff;
                 }
+                sectime_arr[sent_loc] = sectime;
+                mutime_arr[sent_loc] = mutime;
                 data = malloc(pack_len + 1);
                 data[0] = seqnum;
                 window[sent_loc] = data;
-                sent_loc++;
-                sent_loc %= window_len;
+                tries[sent_loc] = 1;
                 sendto(sock, data, pack_len + 1, 0, (struct sockaddr*) &server_addr, sizeof(struct sockaddr));
-                printf("Sent seqnum %d\n", seqnum);
+                gettimeofday(sendtime[sent_loc], NULL);
+                if(my_dbg) printf("Sent seqnum %d\n", seqnum);
                 transnum++;
                 seqnum++;
                 seqnum %= 127;
+                sent_loc++;
+                sent_loc %= window_len;
 
             }
             else{
@@ -175,7 +190,7 @@ int main(int argc, char *argv[]){
                 recvfrom(sock, buf, 1, 0, 
                         (struct sockaddr *)&client_addr, &addr_len);
                 ack_packet = buf[0];
-                printf("Got ack num %d\n", (int) ack_packet);
+                if(my_dbg) printf("Got ack num %d\n", (int) ack_packet);
                 int currloc = acked_loc;
                 int found = 0;
                 while(currloc != sent_loc){
@@ -189,6 +204,21 @@ int main(int argc, char *argv[]){
                 if(found){
                     int clearloc = acked_loc;
                     while(clearloc != (currloc + 1)%window_len){ 
+                        struct timeval acktime;
+                        gettimeofday(&acktime, NULL);
+                        //printf("Ackd pac was sent at %ds %dmus\n",sendtime[currloc]->tv_sec, sendtime[currloc]->tv_usec);
+                        //printf("Now is %ds %dmus\n",acktime.tv_sec, acktime.tv_usec);
+                        //printf("secdiff: %d mudiff %d\n", (acktime.tv_sec - sendtime[currloc]->tv_sec), (acktime.tv_usec - sendtime[currloc]->tv_usec));
+                        double rtt = (acktime.tv_sec - sendtime[currloc]->tv_sec) *
+                            1000000 + (acktime.tv_usec - sendtime[currloc]->tv_usec);
+                        if(debugc){
+                            printf("Seq #:%d Time Generated: %ds %dmus RTT: %lf Number of attempts: %d\n",
+                                    (int)window[currloc][0], sectime_arr[currloc] % 100, 
+                                    mutime_arr[currloc], rtt, tries[currloc]);
+                        }
+                        //printf("rtt: %lf\n", rtt);
+                        rtt_tot += rtt;
+                        //printf("rtt_tot: %lf\n", rtt_tot);
                         free(window[currloc]);
                         window[currloc] = NULL;
                         ackednum++;
@@ -211,13 +241,13 @@ int main(int argc, char *argv[]){
                 int difference = (currtime.tv_sec - sendtime[currloc]->tv_sec) *
                     1000000 + 
                     currtime.tv_usec - sendtime[currloc]->tv_usec;
-                //printf("difference is %d", difference);
                 if(difference > mu_timeout){
-                    printf("Timeout detected %d\n", (int) window[currloc][0]);
+                    if(my_dbg) printf("Timeout detected %d\n", (int) window[currloc][0]);
                     while(currloc != sent_loc){
                         sendto(sock, window[currloc], pack_len + 1, 0, (struct sockaddr*) &server_addr, sizeof(struct sockaddr));
-                        printf("Resending seqnum %d\n", (int) window[currloc][0]);
+                        if(my_dbg) printf("Resending seqnum %d\n", (int) window[currloc][0]);
                         gettimeofday(sendtime[currloc], NULL);
+                        tries[currloc]++;
                         transnum++;
                         currloc++;
                         currloc %= window_len;
@@ -256,10 +286,7 @@ int main(int argc, char *argv[]){
         double mu_throughput = (((double)(max_pack_num * pack_len * 8)) ) / mu_timediff;
         float ter = ((float) transnum) / max_pack_num;
        
-        if(timediff > 0)
-            printf("PACKET_GEN_RATE: %d PACKET_LENGTH: %d Throughput: %lfKbps Transmission Efficiency Ratio: %f\n", pack_rate, pack_len, throughput, ter);
-        else
-            printf("PACKET_GEN_RATE: %d PACKET_LENGTH: %d Throughput: %lfMbps Transmission Efficiency Ratio: %f\n", pack_rate, pack_len, mu_throughput, ter);
+        printf("PACKET_GEN_RATE: %d PACKET_LENGTH: %d Transmission Efficiency Ratio: %f Average RTT: %lfmus\n", pack_rate, pack_len, ter, rtt_tot / ackednum);
         close(sock);
         return 0;
     }
