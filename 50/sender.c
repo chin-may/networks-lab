@@ -110,7 +110,7 @@ int main(int argc, char *argv[]){
 //      struct timeval timeout;
 //      timeout.tv_usec = 0;
 //      timeout.tv_sec = 0;
-        int mu_timeout = 100000;
+        int mu_timeout = 10000;
 
         struct timeval tval_zero;
         tval_zero.tv_usec = 0;
@@ -191,10 +191,12 @@ int main(int argc, char *argv[]){
                     while(clearloc != (currloc + 1)%window_len){ 
                         free(window[currloc]);
                         window[currloc] = NULL;
+                        ackednum++;
                         clearloc++;
                         clearloc %= window_len;
                     }
                     acked_loc = currloc + 1;
+                    acked_loc %= window_len;
                 }
 
                 FD_ZERO(&sockset);
@@ -206,10 +208,12 @@ int main(int argc, char *argv[]){
             struct timeval currtime;
             gettimeofday(&currtime, NULL);
             if(!buffer_empty(sent_loc, acked_loc, window_len)){
-                int difference = ( sendtime[currloc]->tv_sec - currtime.tv_sec ) *
+                int difference = (currtime.tv_sec - sendtime[currloc]->tv_sec) *
                     1000000 + 
-                    sendtime[currloc]->tv_usec - currtime.tv_usec;
+                    currtime.tv_usec - sendtime[currloc]->tv_usec;
+                //printf("difference is %d", difference);
                 if(difference > mu_timeout){
+                    printf("Timeout detected %d\n", (int) window[currloc][0]);
                     while(currloc != sent_loc){
                         sendto(sock, window[currloc], pack_len + 1, 0, (struct sockaddr*) &server_addr, sizeof(struct sockaddr));
                         printf("Resending seqnum %d\n", (int) window[currloc][0]);
@@ -220,7 +224,6 @@ int main(int argc, char *argv[]){
                     }
                 }
             }
-
 
 
 //          FD_ZERO(&sockset);
