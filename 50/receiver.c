@@ -106,7 +106,8 @@ int main(int argc, char** argv){
                 sendto(sock, send_data, 1, 0,
                         (struct sockaddr *)&client_addr, sizeof(struct sockaddr));
 
-                exp_seq = exp_seq?0:1;
+                exp_seq++;
+                exp_seq %= 127;
                 ackednum++;
             }
             else{
