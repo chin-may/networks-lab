@@ -284,6 +284,7 @@ public class vc {
 		nodecount = sc.nextInt();
 		edgecount = sc.nextInt();
 		double[][][] graph = new double[3][][];
+		int[] degree = new int[nodecount];
 		//0 is costs 1 is capacity 2 is delay
 		graph[0] = new double[nodecount][];
 		graph[1] = new double[nodecount][];
@@ -316,13 +317,32 @@ public class vc {
 			case 'r':
 				graph[0][src][dest] =  -Math.log(reliability);
 				break;
+			case 'g':
+				degree[src]++;
+				degree[dest]++;
 			//TODO degree metric
-				
 			}
 			
 		}
 		f.close();
 		sc.close();
+		if(flag == 'g'){
+			sc = new Scanner(new FileReader(path));
+			sc.nextInt();
+			sc.nextInt();
+			
+			while(sc.hasNext()){
+				int src,dest,delay,capacity;
+				double reliability;
+				src = sc.nextInt();
+				dest = sc.nextInt();
+				delay = sc.nextInt();
+				capacity = sc.nextInt();
+				reliability = sc.nextDouble();
+				graph[0][src][dest] = degree[dest];
+			}
+			sc.close();
+		}
 		return graph;
 	}
 	
