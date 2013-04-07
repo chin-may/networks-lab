@@ -59,16 +59,26 @@ public class vc {
 		double[][][] gdata = get_graph(topfile, flag);
 		double[][] graph = gdata[0];
 		double[][] capacity = gdata[1];
+		double[][] delay = gdata[2];
 		
 		int[][][][] paths = new int[nodecount][][][];
+		double[][][][] cost_delays = new double[nodecount][][][];
 		for(int i=0; i< nodecount; i++){
 			paths[i] = new int[nodecount][][];
+			cost_delays[i] = new double[nodecount][][];
 			for(int m= 0; m<nodecount;m++){
-				paths[i][m] = get_paths(graph,i,m);
+				cost_delays[i][m] = new double[2][];
+				cost_delays[i][m][0] = new double[2];
+				cost_delays[i][m][1] = new double[2];
+				cost_delays[i][m][0][0] = 0;
+				cost_delays[i][m][0][1] = 0;
+				cost_delays[i][m][1][0] = 0;
+				cost_delays[i][m][1][1] = 0;
+				paths[i][m] = get_paths(graph,i,m, delay, cost_delays[i][m]);
 			}
 		}
 		
-		make_rtfile(rtfile,paths);
+		make_rtfile(rtfile,paths,cost_delays);
 		
 		int[][][] vcid;
 		int[] conn_src, conn_dest, path_pri;
@@ -85,18 +95,20 @@ public class vc {
 		
 	}
 	
-	static void make_rtfile(String rtfile, int[][][][] paths) throws IOException{
+	static void make_rtfile(String rtfile, int[][][][] paths, double[][][][] cost_delays) throws IOException{
 		FileWriter wr = new FileWriter(rtfile);
 		int node_num = paths.length;
 		for(int i = 0; i < node_num; i++){
 		 	wr.write("Node "+ i + "\n");
 			for(int m = 0; m < node_num; m++){
 				if(i!=m && paths[i][m][0] != null){
-					wr.write("Dest "+ m + "\n");
+					wr.write("Dest "+ m + "\npath: ");
 					int[] a_path = paths[i][m][0];
 					for(int node:a_path){
 						wr.write(node + " ");
 					}
+					wr.write("cost: " + cost_delays[i][m][0][0]);
+					wr.write(" delay: " + cost_delays[i][m][0][1]);
 					wr.write("\n");
 				}
 				if(i!=m && paths[i][m][1] != null){
@@ -105,8 +117,10 @@ public class vc {
 					for(int node:a_path){
 						wr.write(node + " ");
 					}
+					wr.write("cost: " + cost_delays[i][m][1][0]);
+					wr.write(" delay: " + cost_delays[i][m][1][1]);
+					wr.write("\n");
 				}
-				wr.write("\n");
 			}
 		}
 		
@@ -116,7 +130,7 @@ public class vc {
 	
 	static void make_forwd_file(String fwdfile, int[][][][] paths ,int[][][] vcid, 
 			int[] conn_src, int[] conn_dest, int[] path_pri, int node_num) throws IOException{
-		int conn_num = g_conn_num;
+		int conn_num = g_acc_num;
 		String[] table = new String[node_num];
 		for(int i=0; i<node_num; i++){
 			table[i] = "";
@@ -147,8 +161,9 @@ public class vc {
 	
 	static void make_paths_file(String pathsfile, int[][][][] paths ,int[][][] vcid, 
 			int[] conn_src, int[] conn_dest, int[] path_pri) throws IOException{
-		int conn_num = g_conn_num;
+		int conn_num = g_acc_num;
 		FileWriter outfile = new FileWriter(pathsfile);
+		outfile.write(g_conn_num + " " + g_acc_num);
 		for(int i=0; i<conn_num; i++){
 			int src = conn_src[i], dest = conn_dest[i];
 			outfile.write(i + " s: " + src + " d: " + dest + " p: ");
@@ -242,6 +257,7 @@ public class vc {
 	
 	//For a given path, checks if a connection can be admitted
 	static boolean check_allowed(double[][] capacity, double[][] used_cap, int src, int dest, int[] path, double equiv){
+		if(path == null) return false;
 		int curr = src;
 		int i = 0;
 		while(curr != dest){
@@ -267,13 +283,15 @@ public class vc {
 		Scanner sc = new Scanner(f);
 		nodecount = sc.nextInt();
 		edgecount = sc.nextInt();
-		double[][][] graph = new double[2][][];
-		//0 is costs 1 is capacity
+		double[][][] graph = new double[3][][];
+		//0 is costs 1 is capacity 2 is delay
 		graph[0] = new double[nodecount][];
 		graph[1] = new double[nodecount][];
+		graph[2] = new double[nodecount][];
 		for(int i=0; i< nodecount; i++){
 			graph[0][i] = new double[nodecount];
 			graph[1][i] = new double[nodecount];
+			graph[2][i] = new double[nodecount];
 			for(int m = 0; m < nodecount; m++){
 				graph[0][i][m]= -1;
 			}
@@ -286,6 +304,7 @@ public class vc {
 			delay = sc.nextInt();
 			capacity = sc.nextInt();
 			graph[1][src][dest] = capacity;
+			graph[2][src][dest] = delay;
 			reliability = sc.nextDouble();
 			switch(flag){
 			case 'd':
@@ -308,7 +327,7 @@ public class vc {
 	}
 	
 	
-	static int[][] get_paths(double[][] costs, int src, int dest){
+	static int[][] get_paths(double[][] costs, int src, int dest, double[][] delay, double[][] cost_delay){
 		int nodecount = costs.length;
 		double[][] sec_costs = new double[nodecount][];
 		for(int i = 0; i < costs.length; i++){
@@ -351,6 +370,8 @@ public class vc {
 		int back_node = dest;
 		Stack<Integer> st = new Stack<>();
 		while(back_node != src){
+			cost_delay[0][0] += costs[parent[back_node]][back_node];
+			cost_delay[0][1] += delay[parent[back_node]][back_node];
 			st.push(back_node);
 			back_node = parent[back_node];
 		}
@@ -399,6 +420,8 @@ public class vc {
 		back_node = dest;
 		st = new Stack<>();
 		while(back_node != src){
+			cost_delay[1][0] += costs[parent[back_node]][back_node];
+			cost_delay[1][1] += delay[parent[back_node]][back_node];
 			st.push(back_node);
 			back_node = parent[back_node];
 		}
