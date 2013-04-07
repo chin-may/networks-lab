@@ -50,8 +50,11 @@ public class vc {
 			}
 		}
 		
-		
-		int nodecount = 5, edgecount = 5;
+		Scanner topf_sc = new Scanner(new FileReader(topfile));
+		int nodecount, edgecount;
+		nodecount = topf_sc.nextInt();
+		edgecount = topf_sc.nextInt();
+		topf_sc.close();
 		
 		double[][][] gdata = get_graph(topfile, flag);
 		double[][] graph = gdata[0];
@@ -66,6 +69,19 @@ public class vc {
 		}
 		
 		make_rtfile(rtfile,paths);
+		
+		int[][][] vcid;
+		int[] conn_src, conn_dest, path_pri;
+		Scanner connf_sc = new Scanner(new FileReader(connfile));
+		int conn_num = connf_sc.nextInt();
+		connf_sc.close();
+		conn_src = new int[conn_num];
+		conn_dest = new int[conn_num];
+		path_pri = new int[conn_num];
+		vcid = get_conn(connfile, graph, capacity, paths, pessimistic, conn_src, conn_dest, path_pri);
+		make_paths_file(pathsfile, paths, vcid, conn_src, conn_dest, path_pri);
+		
+		make_forwd_file(ftfile, paths, vcid, conn_src, conn_dest, path_pri, nodecount);
 		
 	}
 	
@@ -99,8 +115,7 @@ public class vc {
 	
 	
 	static void make_forwd_file(String fwdfile, int[][][][] paths ,int[][][] vcid, 
-			int[] conn_src, int[] conn_dest, int[] path_pri) throws IOException{
-		int node_num = 1;
+			int[] conn_src, int[] conn_dest, int[] path_pri, int node_num) throws IOException{
 		int conn_num = g_conn_num;
 		String[] table = new String[node_num];
 		for(int i=0; i<node_num; i++){
@@ -109,12 +124,12 @@ public class vc {
 		for(int i=0; i<conn_num; i++){
 			int src = conn_src[i], dest = conn_dest[i];
 			int[] cpath = paths[src][dest][path_pri[i]];
-			for(int m=1; m<cpath.length;m++){
-				int curr = cpath[m];
-				table[curr].concat(cpath[m-1]+" ");
-				table[curr].concat(vcid[cpath[m-1]][curr][i] + " ");
-				table[curr].concat(cpath[m+1] + " ");
-				table[curr].concat(vcid[curr][cpath[m+1]][i] + "\n");
+			for(int m=0; m<cpath.length-1;m++){
+				int curr = cp_wrap(cpath, m, src);
+				table[curr] = table[curr].concat(cp_wrap(cpath, m -1, src)+" ");
+				table[curr] = table[curr].concat(vcid[ cp_wrap(cpath, m -1, src) ][curr][i] + " ");
+				table[curr] = table[curr].concat(cpath[m+1] + " ");
+				table[curr] = table[curr].concat(vcid[curr][cpath[m+1]][i] + "\n");
 			}
 		}
 		FileWriter wr = new FileWriter(fwdfile);
@@ -123,6 +138,11 @@ public class vc {
 			wr.write(table[i]);
 		}
 		wr.close();
+	}
+	
+	static int cp_wrap(int[] cpath,int m, int src){
+		if(m == -1) return src;
+		else return cpath[m];
 	}
 	
 	static void make_paths_file(String pathsfile, int[][][][] paths ,int[][][] vcid, 
@@ -149,17 +169,13 @@ public class vc {
 		outfile.close();
 	}
 	
-	static int[][][] get_conn(String connfile, double[][] graph, double[][] capacity,int[][][][] paths, boolean pessi, int[] conn_src, int[] conn_dest, int[] path_pri){
+	static int[][][] get_conn(String connfile, double[][] graph, double[][] capacity,int[][][][] paths, 
+			boolean pessi, int[] conn_src, int[] conn_dest, int[] path_pri) throws IOException{
 		int disallowed_num = 0;
 		int nodecount = graph.length;
-		Scanner sc_conn = new Scanner(connfile);
+		Scanner sc_conn = new Scanner(new FileReader(connfile));
 		int conn_num = sc_conn.nextInt();
 		g_conn_num = conn_num;
-	
-		path_pri = new int[conn_num];
-		conn_src = new int[conn_num];
-		conn_dest = new int[conn_num];
-		
 		
 		int[][][] connection = new int[nodecount][][];
 		//[i][j][connection_id]
@@ -171,6 +187,9 @@ public class vc {
 			used_link_id[i] = new int[nodecount];
 			for(int m=0; m<nodecount; m++){
 				connection[i][m] = new int[conn_num];
+				for(int l=0;l<conn_num;l++){
+					connection[i][m][l] = -1;
+				}
 			}
 		}
 		int connection_id = 0;
@@ -217,6 +236,7 @@ public class vc {
 			
 		}
 		g_acc_num = g_conn_num - disallowed_num;
+		sc_conn.close();
 		return connection;
 	}
 	
